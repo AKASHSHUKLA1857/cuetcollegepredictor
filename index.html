@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1565,34 +1566,14 @@ async function runScorecardAnalysis() {
   };
 
   try {
-    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+    const resp = await fetch('/api/analyse', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-use': 'true'
       },
       body: JSON.stringify({
-        model: 'claude-opus-4-5-20251001',
-        max_tokens: 1000,
-        messages: [{
-          role: 'user',
-          content: [
-            ...(scMime === 'application/pdf'
-              ? [{ type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: scB64 } }]
-              : [{ type: 'image', source: { type: 'base64', media_type: scMime, data: scB64 } }]),
-            { type: 'text', text: `This is an NTA CUET (UG) scorecard image. Look at the Score Card Details table.
-
-Extract every subject row. For each row return:
-- subject: the subject name exactly as shown
-- score: the NTA Score (Normalised Score) "In Figure" value — the decimal number like 225.6066968
-
-Return ONLY a valid JSON array, nothing else, no markdown:
-[{"subject":"English","score":225.6066968},{"subject":"History","score":249.6}]
-
-Use the "In Figure" column (the decimal numbers). Do NOT use the Percentile column.` }
-          ]
-        }]
+        imageData: scB64,
+        mimeType: scMime
       })
     });
 
@@ -1669,11 +1650,7 @@ Use the "In Figure" column (the decimal numbers). Do NOT use the Percentile colu
 
   } catch (err) {
     done();
-    if (err.message && (err.message.includes('fetch') || err.message.includes('Failed'))) {
-      showErr('Network error — please ensure the site is hosted on a server (not opened as a local file) and try again.');
-    } else {
-      showErr(err.message || 'Something went wrong. Please try again.');
-    }
+    showErr(err.message || 'Something went wrong. Please try again.');
   }
 }
 
