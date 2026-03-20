@@ -42,28 +42,37 @@ Rules:
       }
     };
 
-    const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+    // Try gemini-2.0-flash first, fallback to gemini-1.5-flash-latest
+    const models = ['gemini-2.0-flash', 'gemini-1.5-flash-latest', 'gemini-1.5-flash'];
+    let lastError = null;
 
-    const response = await fetch(geminiUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(requestBody)
-    });
+    for (const model of models) {
+      const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
 
-    const data = await response.json();
-
-    if (!response.ok) {
-      return res.status(response.status).json({
-        error: { message: data.error?.message || 'Gemini API error ' + response.status }
+      const response = await fetch(geminiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(requestBody)
       });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+        return res.status(200).json({
+          content: [{ type: 'text', text }]
+        });
+      }
+
+      lastError = data.error?.message || 'API error ' + response.status;
+
+      // If it's not a "model not found" error, stop trying
+      if (!lastError.includes('not found') && !lastError.includes('not supported')) {
+        return res.status(response.status).json({ error: { message: lastError } });
+      }
     }
 
-    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
-
-    // Return in same format as Anthropic so frontend code stays the same
-    return res.status(200).json({
-      content: [{ type: 'text', text }]
-    });
+    return res.status(400).json({ error: { message: lastError || 'No available Gemini model found.' } });
 
   } catch (error) {
     return res.status(500).json({ error: { message: error.message || 'Internal server error' } });
