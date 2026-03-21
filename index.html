@@ -837,6 +837,410 @@ footer {
     transition-duration: .01ms !important;
   }
 }
+
+/* ─── SCORECARD TAB ─────────────────────────────── */
+.upload-zone {
+  border: 2px dashed var(--border2);
+  border-radius: var(--r2);
+  padding: 52px 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: all .25s cubic-bezier(.34,1.2,.64,1);
+  background: var(--bg3);
+  position: relative;
+}
+.upload-zone:hover,
+.upload-zone.drag-over {
+  border-color: var(--gold);
+  background: var(--gold-dim);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 28px rgba(245,200,66,.12);
+}
+.upload-zone-icon { font-size: 2.8rem; margin-bottom: 12px; line-height: 1; }
+.upload-zone-title { font-size: 1rem; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+.upload-zone-hint { font-size: .8rem; color: var(--text3); }
+
+.sc-spinner {
+  width: 44px; height: 44px; border-radius: 50%;
+  border: 3px solid var(--border2);
+  border-top-color: var(--gold);
+  animation: spin .8s linear infinite;
+}
+.sc-tbl { width:100%; border-collapse:collapse; font-size:.82rem; border:1px solid var(--border2); border-radius:var(--r); overflow:hidden; }
+.sc-tbl th { background:var(--surface2); color:var(--text2); padding:9px 12px; text-align:left; font-weight:700; font-size:.7rem; letter-spacing:.06em; text-transform:uppercase; }
+.sc-tbl td { padding:9px 12px; border-bottom:1px solid var(--border); color:var(--text2); }
+.sc-tbl tr:last-child td { border-bottom:none; }
+.sc-tbl tr:hover td { background:rgba(255,255,255,.03); }
+.sc-tbl .sc-score { font-weight:700; color:var(--gold2); font-size:.92rem; }
+.sc-tbl .sc-total td { background:rgba(245,200,66,.07); border-top:1px solid rgba(245,200,66,.2); font-weight:700; color:var(--text); }
+.sc-tbl .sc-total .sc-score { font-size:1rem; }
+.sc-err { background:var(--red-dim); border:1px solid rgba(248,113,113,.3); border-radius:var(--r); padding:14px 18px; color:var(--red); font-size:.87rem; line-height:1.6; margin-top:16px; }
+
+/* ─── AI ADMISSION GUIDE ──────────────────────────── */
+.ai-profile-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 16px;
+}
+.ai-profile-block { display: flex; flex-direction: column; }
+.ai-profile-label { font-size: .78rem; font-weight: 700; color: var(--gold2); letter-spacing: .07em; text-transform: uppercase; }
+
+.ai-profile-bar {
+  background: var(--surface2); border: 1px solid var(--border2);
+  border-radius: var(--r); padding: 12px 16px;
+  font-size: .82rem; color: var(--text2); margin-bottom: 16px;
+  line-height: 1.6;
+}
+
+.ai-chat-box {
+  background: var(--bg3); border: 1px solid var(--border2);
+  border-radius: var(--r2); padding: 20px;
+  min-height: 340px; max-height: 520px;
+  overflow-y: auto; display: flex; flex-direction: column; gap: 16px;
+}
+.ai-msg { display: flex; gap: 12px; align-items: flex-start; animation: fadeUp .3s ease; }
+.ai-msg.user { flex-direction: row-reverse; }
+.ai-avatar {
+  width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: .9rem; font-weight: 700;
+}
+.ai-msg.assistant .ai-avatar { background: var(--gold-dim); border: 1px solid rgba(245,200,66,.3); }
+.ai-msg.user .ai-avatar { background: var(--surface2); border: 1px solid var(--border2); font-size:.75rem; color:var(--text3); }
+.ai-bubble {
+  max-width: 82%; padding: 11px 16px; border-radius: 12px;
+  font-size: .87rem; line-height: 1.65; color: var(--text);
+}
+.ai-msg.assistant .ai-bubble {
+  background: var(--surface2); border: 1px solid var(--border2);
+  border-top-left-radius: 4px;
+}
+.ai-msg.user .ai-bubble {
+  background: var(--gold-dim); border: 1px solid rgba(245,200,66,.25);
+  color: var(--text); border-top-right-radius: 4px;
+}
+.ai-bubble ul { padding-left: 18px; margin: 6px 0; }
+.ai-bubble li { margin-bottom: 4px; }
+.ai-bubble strong { color: var(--gold2); }
+.ai-bubble p { margin-bottom: 8px; }
+.ai-bubble p:last-child { margin-bottom: 0; }
+
+.ai-typing { display: flex; gap: 5px; align-items: center; padding: 4px 0; }
+.ai-typing span {
+  width: 7px; height: 7px; border-radius: 50%; background: var(--gold);
+  animation: typingDot 1.2s infinite;
+}
+.ai-typing span:nth-child(2) { animation-delay: .2s; }
+.ai-typing span:nth-child(3) { animation-delay: .4s; }
+@keyframes typingDot { 0%,60%,100%{opacity:.25;transform:scale(1)} 30%{opacity:1;transform:scale(1.3)} }
+
+.ai-chat-input-wrap {
+  display: flex; gap: 10px; align-items: flex-end; margin-top: 14px;
+}
+.ai-chat-input {
+  flex: 1; padding: 12px 16px;
+  background: var(--bg3); border: 1.5px solid var(--border2); border-radius: var(--r);
+  font-family: "Plus Jakarta Sans", sans-serif; font-size: .87rem; color: var(--text);
+  resize: none; transition: border-color .2s;
+  line-height: 1.5;
+}
+.ai-chat-input:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px var(--gold-dim); }
+.ai-send-btn {
+  width: 46px; height: 46px; border-radius: var(--r);
+  background: var(--gold); border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--ink); transition: all .2s; flex-shrink: 0;
+}
+.ai-send-btn:hover { background: var(--gold2); transform: scale(1.05); }
+.ai-send-btn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+
+.ai-quick-btns { display: flex; flex-wrap: wrap; gap: 7px; }
+.ai-quick-btn {
+  padding: 6px 13px; border: 1.5px solid var(--border2);
+  border-radius: 100px; background: var(--bg3);
+  font-size: .78rem; font-weight: 500; cursor: pointer;
+  color: var(--text3); transition: all .18s;
+}
+.ai-quick-btn:hover { border-color: var(--gold); color: var(--gold2); background: var(--gold-dim); }
+
+@media (max-width: 768px) {
+  .ai-profile-grid { grid-template-columns: 1fr; }
+  .ai-bubble { max-width: 92%; }
+  .ai-chat-box { min-height: 280px; max-height: 400px; padding: 14px; }
+}
+
+/* ══════════════════════════════════════════
+   AI ADMISSION GUIDE — GEMINI-LIKE LAYOUT
+══════════════════════════════════════════ */
+
+/* Full-height shell */
+.ai-shell {
+  display: flex;
+  height: calc(100vh - 520px);
+  min-height: 580px;
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: var(--r2);
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,.4);
+}
+
+/* ── SIDEBAR ─────────────────────────── */
+.ai-sidebar {
+  width: 260px; flex-shrink: 0;
+  background: var(--ink);
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column;
+  transition: all .3s ease;
+  overflow: hidden;
+}
+.ai-sidebar.collapsed { width: 0; }
+
+.ai-sidebar-header {
+  display: flex; align-items: center; gap: 10px;
+  padding: 18px 16px 14px;
+  border-bottom: 1px solid var(--border);
+}
+.ai-sidebar-logo {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--gold-dim); border: 1.5px solid rgba(245,200,66,.3);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem; flex-shrink: 0;
+}
+.ai-sidebar-title { font-family: "Unbounded",sans-serif; font-size: .8rem; font-weight: 700; color: var(--text); }
+.ai-sidebar-sub { font-size: .7rem; color: var(--text3); margin-top: 1px; }
+.ai-new-btn {
+  margin-left: auto; width: 30px; height: 30px; border-radius: 6px;
+  background: transparent; border: 1px solid var(--border2);
+  color: var(--text3); cursor: pointer; font-size: 1rem;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .18s; flex-shrink: 0;
+}
+.ai-new-btn:hover { background: var(--surface2); color: var(--text); }
+
+.ai-new-chat-btn {
+  margin: 12px 12px 4px;
+  padding: 9px 14px; border-radius: 8px;
+  background: var(--gold-dim); border: 1px solid rgba(245,200,66,.25);
+  color: var(--gold2); font-size: .82rem; font-weight: 600;
+  cursor: pointer; text-align: left; transition: all .18s;
+}
+.ai-new-chat-btn:hover { background: rgba(245,200,66,.2); border-color: rgba(245,200,66,.45); }
+
+.ai-sidebar-section {
+  padding: 14px 16px 6px;
+  font-size: .68rem; font-weight: 700; color: var(--text3);
+  text-transform: uppercase; letter-spacing: .1em;
+}
+.ai-sidebar-topics { flex: 1; overflow-y: auto; padding: 4px 8px; }
+.ai-topic-btn {
+  display: block; width: 100%;
+  padding: 9px 10px; border-radius: 8px;
+  background: transparent; border: none;
+  color: var(--text3); font-size: .81rem; text-align: left;
+  cursor: pointer; transition: all .15s; margin-bottom: 2px;
+  line-height: 1.4;
+}
+.ai-topic-btn:hover { background: var(--surface2); color: var(--text); }
+.ai-sidebar-bottom { padding: 12px; border-top: 1px solid var(--border); }
+.ai-data-badge {
+  font-size: .71rem; color: var(--text3); text-align: center;
+  background: var(--surface); border-radius: 6px; padding: 7px 10px;
+  border: 1px solid var(--border);
+}
+
+/* ── MAIN AREA ───────────────────────── */
+.ai-main {
+  flex: 1; display: flex; flex-direction: column;
+  overflow: hidden; background: var(--bg2);
+}
+
+.ai-topbar {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 20px; border-bottom: 1px solid var(--border);
+  background: var(--bg2); flex-shrink: 0;
+}
+.ai-menu-btn {
+  width: 36px; height: 36px; border-radius: 8px;
+  background: transparent; border: 1px solid var(--border);
+  color: var(--text2); cursor: pointer; font-size: 1.1rem;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .18s;
+}
+.ai-menu-btn:hover { background: var(--surface); color: var(--text); }
+.ai-topbar-title {
+  font-family: "Unbounded",sans-serif; font-size: .82rem;
+  font-weight: 700; color: var(--text); flex: 1;
+}
+.ai-topbar-new {
+  padding: 7px 14px; border-radius: 20px;
+  background: var(--gold-dim); border: 1px solid rgba(245,200,66,.3);
+  color: var(--gold2); font-size: .78rem; font-weight: 600;
+  cursor: pointer; transition: all .18s;
+}
+.ai-topbar-new:hover { background: rgba(245,200,66,.2); }
+
+/* ── MESSAGES ────────────────────────── */
+.ai-messages {
+  flex: 1; overflow-y: auto; padding: 24px 20px;
+  display: flex; flex-direction: column; gap: 0;
+  scroll-behavior: smooth;
+}
+.ai-messages::-webkit-scrollbar { width: 4px; }
+.ai-messages::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+/* Welcome screen */
+.ai-welcome {
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; text-align: center;
+  padding: 20px; max-width: 680px; margin: auto;
+  animation: fadeUp .5s ease;
+}
+.ai-welcome-icon { font-size: 3rem; margin-bottom: 16px; }
+.ai-welcome-title {
+  font-family: "Unbounded",sans-serif; font-size: 1.5rem;
+  font-weight: 700; color: var(--text); margin-bottom: 10px;
+}
+.ai-welcome-sub { font-size: .9rem; color: var(--text2); line-height: 1.65; max-width: 520px; }
+.ai-welcome-cards {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 10px; margin-top: 28px; width: 100%;
+}
+.ai-wcard {
+  background: var(--surface); border: 1px solid var(--border2);
+  border-radius: 12px; padding: 14px 16px; cursor: pointer;
+  text-align: left; transition: all .2s;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.ai-wcard:hover {
+  border-color: rgba(245,200,66,.4); background: rgba(245,200,66,.06);
+  transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,.2);
+}
+.ai-wcard-icon { font-size: 1.1rem; }
+.ai-wcard-text { font-size: .82rem; color: var(--text2); line-height: 1.5; }
+
+/* Chat messages */
+.ai-turn { margin-bottom: 28px; animation: fadeUp .3s ease; }
+.ai-turn-user {
+  display: flex; justify-content: flex-end;
+}
+.ai-turn-user .ai-bubble-user {
+  max-width: 70%; background: var(--surface2);
+  border: 1px solid var(--border2); border-radius: 18px 18px 4px 18px;
+  padding: 12px 18px; font-size: .88rem; color: var(--text); line-height: 1.6;
+}
+.ai-turn-ai { display: flex; gap: 12px; align-items: flex-start; }
+.ai-avatar-ai {
+  width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0;
+  background: var(--gold-dim); border: 1.5px solid rgba(245,200,66,.3);
+  display: flex; align-items: center; justify-content: center;
+  font-size: .9rem; margin-top: 2px;
+}
+.ai-bubble-ai {
+  flex: 1; font-size: .88rem; color: var(--text); line-height: 1.7;
+  max-width: calc(100% - 46px);
+}
+.ai-bubble-ai p { margin-bottom: 10px; }
+.ai-bubble-ai p:last-child { margin-bottom: 0; }
+.ai-bubble-ai ul, .ai-bubble-ai ol { padding-left: 20px; margin: 8px 0; }
+.ai-bubble-ai li { margin-bottom: 5px; }
+.ai-bubble-ai strong { color: var(--gold2); font-weight: 700; }
+.ai-bubble-ai h3 { color: var(--text); font-size: .92rem; margin: 12px 0 6px; font-weight: 700; }
+.ai-bubble-ai code { background: var(--surface2); padding: 1px 6px; border-radius: 4px; font-size: .84rem; }
+.ai-bubble-ai table { width:100%; border-collapse:collapse; margin:10px 0; font-size:.82rem; }
+.ai-bubble-ai th { background:var(--surface2); color:var(--text2); padding:7px 10px; text-align:left; font-size:.74rem; letter-spacing:.04em; text-transform:uppercase; }
+.ai-bubble-ai td { padding:7px 10px; border-bottom:1px solid var(--border); color:var(--text2); }
+.ai-bubble-ai tr:last-child td { border-bottom:none; }
+
+/* Typing dots */
+.ai-typing-dots { display:flex; gap:5px; align-items:center; padding:8px 0; }
+.ai-typing-dots span {
+  width:8px; height:8px; border-radius:50%; background:var(--gold);
+  animation:typingDot 1.2s infinite;
+}
+.ai-typing-dots span:nth-child(2){animation-delay:.2s}
+.ai-typing-dots span:nth-child(3){animation-delay:.4s}
+@keyframes typingDot{0%,60%,100%{opacity:.25;transform:scale(.9)}30%{opacity:1;transform:scale(1.2)}}
+
+/* ── INPUT AREA ──────────────────────── */
+.ai-input-area {
+  padding: 16px 20px 14px;
+  border-top: 1px solid var(--border);
+  background: var(--bg2); flex-shrink: 0;
+}
+.ai-input-box {
+  background: var(--surface); border: 1.5px solid var(--border2);
+  border-radius: 14px; overflow: hidden;
+  transition: border-color .2s, box-shadow .2s;
+}
+.ai-input-box:focus-within {
+  border-color: rgba(245,200,66,.5);
+  box-shadow: 0 0 0 3px rgba(245,200,66,.08);
+}
+.ai-textarea {
+  width: 100%; padding: 14px 18px 6px;
+  background: transparent; border: none; outline: none;
+  font-family: "Plus Jakarta Sans",sans-serif;
+  font-size: .9rem; color: var(--text); resize: none;
+  line-height: 1.5; max-height: 180px; overflow-y: auto;
+}
+.ai-textarea::placeholder { color: var(--text3); }
+.ai-input-actions {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 6px 14px 10px;
+}
+.ai-input-hint { font-size: .72rem; color: var(--text3); }
+.ai-send-btn {
+  width: 36px; height: 36px; border-radius: 8px;
+  background: var(--gold); border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--ink); transition: all .2s;
+}
+.ai-send-btn:hover { background: var(--gold2); transform: scale(1.05); }
+.ai-send-btn:disabled { opacity: .4; cursor: not-allowed; transform: none; }
+.ai-disclaimer {
+  text-align: center; font-size: .72rem; color: var(--text3);
+  margin-top: 8px; line-height: 1.4;
+}
+
+/* ── MOBILE ──────────────────────────── */
+@media (max-width: 768px) {
+  .ai-shell { height: calc(100vh - 440px); min-height: 500px; }
+  .ai-sidebar { position: absolute; z-index: 100; height: 100%; box-shadow: 4px 0 20px rgba(0,0,0,.4); }
+  .ai-sidebar.collapsed { width: 0; }
+  .ai-welcome-cards { grid-template-columns: 1fr; }
+  .ai-topbar { padding: 10px 14px; }
+  .ai-messages { padding: 16px 14px; }
+  .ai-turn-user .ai-bubble-user { max-width: 88%; }
+  .ai-input-area { padding: 12px 14px 10px; }
+  .ai-input-hint { display: none; }
+}
+
+/* ─── SCORECARD UPLOAD TAB ──────────── */
+.upload-zone {
+  border: 2px dashed var(--border2); border-radius: var(--r2);
+  padding: 52px 24px; text-align: center; cursor: pointer;
+  transition: all .25s cubic-bezier(.34,1.2,.64,1); background: var(--bg3);
+}
+.upload-zone:hover, .upload-zone.drag-over {
+  border-color: var(--gold); background: var(--gold-dim);
+  transform: translateY(-3px); box-shadow: 0 8px 28px rgba(245,200,66,.12);
+}
+.upload-zone-icon { font-size: 2.8rem; margin-bottom: 12px; line-height: 1; }
+.upload-zone-title { font-size: 1rem; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+.upload-zone-hint { font-size: .8rem; color: var(--text3); }
+.sc-spinner {
+  width: 44px; height: 44px; border-radius: 50%;
+  border: 3px solid var(--border2); border-top-color: var(--gold);
+  animation: spin .8s linear infinite;
+}
+.sc-tbl { width:100%; border-collapse:collapse; font-size:.82rem; border:1px solid var(--border2); border-radius:var(--r); overflow:hidden; }
+.sc-tbl th { background:var(--surface2); color:var(--text2); padding:9px 12px; text-align:left; font-weight:700; font-size:.7rem; letter-spacing:.06em; text-transform:uppercase; }
+.sc-tbl td { padding:9px 12px; border-bottom:1px solid var(--border); color:var(--text2); }
+.sc-tbl tr:last-child td { border-bottom:none; }
+.sc-tbl tr:hover td { background:rgba(255,255,255,.03); }
+.sc-tbl .sc-score { font-weight:700; color:var(--gold2); font-size:.92rem; }
+.sc-tbl .sc-total td { background:rgba(245,200,66,.07); border-top:1px solid rgba(245,200,66,.2); font-weight:700; color:var(--text); }
+.sc-tbl .sc-total .sc-score { font-size:1rem; }
+.sc-err { background:var(--red-dim); border:1px solid rgba(248,113,113,.3); border-radius:var(--r); padding:14px 18px; color:var(--red); font-size:.87rem; line-height:1.6; margin-top:16px; }
 </style>
 </head>
 <body>
@@ -856,6 +1260,8 @@ footer {
     <div class="hero-tabs">
       <button class="htab on" onclick="switchTab('checker',this)">Course Eligibility Checker</button>
       <button class="htab" onclick="switchTab('predictor',this)">College &amp; Course Predictor</button>
+      <button class="htab" onclick="switchTab('upload',this)">📄 Upload Scorecard</button>
+      <button class="htab" onclick="switchTab('scorecard',this)">🤖 AI Admission Guide</button>
     </div>
   </div>
 </header>
@@ -960,6 +1366,181 @@ footer {
   </div>
 </div>
 </div>
+
+<!-- ═══ TAB 3: AI ADMISSION GUIDE ═══ -->
+<div id="tab-scorecard" class="hidden">
+  <div class="ai-shell">
+
+    <!-- Sidebar -->
+    <div class="ai-sidebar" id="ai-sidebar">
+      <div class="ai-sidebar-header">
+        <div class="ai-sidebar-logo">🤖</div>
+        <div>
+          <div class="ai-sidebar-title">DU AI Guide</div>
+          <div class="ai-sidebar-sub">CUET 2026</div>
+        </div>
+        <button class="ai-new-btn" onclick="startNewChat()" title="New Chat">✏</button>
+      </div>
+
+      <button class="ai-new-chat-btn" onclick="startNewChat()">+ New Conversation</button>
+
+      <div class="ai-sidebar-section">Suggested Topics</div>
+      <div class="ai-sidebar-topics" id="ai-sidebar-topics">
+        <button class="ai-topic-btn" onclick="askTopic(this)">🎯 Which courses can I get?</button>
+        <button class="ai-topic-btn" onclick="askTopic(this)">📊 Best colleges for my score</button>
+        <button class="ai-topic-btn" onclick="askTopic(this)">📚 Explain B.Com Hons eligibility</button>
+        <button class="ai-topic-btn" onclick="askTopic(this)">🔬 B.Sc Physics requirements</button>
+        <button class="ai-topic-btn" onclick="askTopic(this)">⚖ B.A. Econ vs B.Com comparison</button>
+        <button class="ai-topic-btn" onclick="askTopic(this)">🏫 Top DU colleges cut-offs</button>
+        <button class="ai-topic-btn" onclick="askTopic(this)">📝 How does CUET scoring work?</button>
+        <button class="ai-topic-btn" onclick="askTopic(this)">🌐 मुझे कौन से कोर्स मिल सकते हैं?</button>
+      </div>
+
+      <div class="ai-sidebar-bottom">
+        <div class="ai-data-badge">📂 265 DU Programmes · 2024 Cut-offs</div>
+      </div>
+    </div>
+
+    <!-- Main chat area -->
+    <div class="ai-main">
+
+      <!-- Top bar -->
+      <div class="ai-topbar">
+        <button class="ai-menu-btn" onclick="toggleSidebar()" title="Menu">☰</button>
+        <div class="ai-topbar-title">DU Admission AI Guide</div>
+        <button class="ai-topbar-new" onclick="startNewChat()" title="New Chat">✏ New</button>
+      </div>
+
+      <!-- Messages area -->
+      <div class="ai-messages" id="ai-messages">
+        <!-- Welcome screen shown when no messages -->
+        <div class="ai-welcome" id="ai-welcome">
+          <div class="ai-welcome-icon">🎓</div>
+          <h2 class="ai-welcome-title">DU Admission AI Guide</h2>
+          <p class="ai-welcome-sub">Ask me anything about Delhi University admissions, courses, eligibility &amp; colleges. I know all 265 DU programmes and CUET 2024 cut-off data.</p>
+          <p class="ai-welcome-sub" style="margin-top:6px;font-size:.82rem;color:var(--text3)">आप हिंदी, English या किसी भी भाषा में पूछ सकते हैं।</p>
+          <div class="ai-welcome-cards">
+            <div class="ai-wcard" onclick="useWcard(this)">
+              <div class="ai-wcard-icon">🎯</div>
+              <div class="ai-wcard-text">I have English, History and GAT — which DU courses can I apply for?</div>
+            </div>
+            <div class="ai-wcard" onclick="useWcard(this)">
+              <div class="ai-wcard-icon">📊</div>
+              <div class="ai-wcard-text">I scored 220 in English and 230 in Economics. Which colleges can I get in OBC category?</div>
+            </div>
+            <div class="ai-wcard" onclick="useWcard(this)">
+              <div class="ai-wcard-icon">📚</div>
+              <div class="ai-wcard-text">B.Com Hons की eligibility क्या है और कौन से subjects चाहिए?</div>
+            </div>
+            <div class="ai-wcard" onclick="useWcard(this)">
+              <div class="ai-wcard-icon">🔬</div>
+              <div class="ai-wcard-text">What is the difference between B.Sc Hons and B.Sc Programme courses?</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Input area -->
+      <div class="ai-input-area">
+        <div class="ai-input-box">
+          <textarea id="ai-input" class="ai-textarea" placeholder="Ask about DU admissions... (English या हिंदी में पूछें)" rows="1"
+            oninput="autoResize(this)"
+            onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMsg();}"></textarea>
+          <div class="ai-input-actions">
+            <span class="ai-input-hint">Enter to send · Shift+Enter for new line</span>
+            <button class="ai-send-btn" id="ai-send-btn" onclick="sendMsg()">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="ai-disclaimer">DU AI Guide · Cut-off data based on CUET 2024 (last year). Verify with official DU/NTA sources.</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ═══ TAB 4: SCORECARD UPLOAD ═══ -->
+<div id="tab-upload" class="hidden">
+<div class="panel">
+  <div class="ph">
+    <span class="ph-icon">📄</span>
+    <div>
+      <h2>Upload Scorecard &amp; Check Admission Chances</h2>
+      <p>AI reads your NTA CUET scorecard and instantly predicts your eligible colleges</p>
+    </div>
+  </div>
+  <div class="pb">
+
+    <div class="sblock">
+      <div class="stitle">📋 Upload Your CUET Scorecard</div>
+      <p class="ssub">Upload a clear photo or screenshot of your NTA CUET UG scorecard. Our AI will automatically read your subjects and NTA Normalised Scores — no manual entry needed.</p>
+
+      <div class="upload-zone" id="upload-zone" onclick="document.getElementById('sc-file').click()">
+        <div class="upload-zone-icon">📤</div>
+        <div class="upload-zone-title">Click to upload or drag &amp; drop your scorecard</div>
+        <div class="upload-zone-hint">JPG &nbsp;·&nbsp; PNG &nbsp;·&nbsp; JPEG &nbsp;·&nbsp; PDF &nbsp;·&nbsp; Max 10MB</div>
+        <input type="file" id="sc-file" accept="image/*,.pdf,application/pdf" style="display:none" onchange="onScFileSelect(this)">
+      </div>
+
+      <div id="sc-preview-wrap" style="display:none;margin-top:16px">
+        <div style="display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap">
+          <img id="sc-preview-img" style="max-width:260px;max-height:340px;border-radius:8px;border:1px solid var(--border2);object-fit:contain;background:var(--bg3)">
+          <div>
+            <div id="sc-preview-name" style="font-size:.82rem;color:var(--text2);font-weight:500;margin-bottom:10px;word-break:break-all"></div>
+            <button class="btn btn-ol btn-sm" onclick="clearScUpload()">✕ Remove &amp; Upload Different</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sblock">
+      <div class="stitle">🏷 Your Reservation Category</div>
+      <div class="catbtns" id="sc-catbtns">
+        <button class="catbtn on" data-cat="UR" onclick="setScCat(this)">UR (General)</button>
+        <button class="catbtn" data-cat="OBC" onclick="setScCat(this)">OBC</button>
+        <button class="catbtn" data-cat="SC" onclick="setScCat(this)">SC</button>
+        <button class="catbtn" data-cat="ST" onclick="setScCat(this)">ST</button>
+        <button class="catbtn" data-cat="EWS" onclick="setScCat(this)">EWS</button>
+        <button class="catbtn" data-cat="PwBD" onclick="setScCat(this)">PwBD</button>
+      </div>
+    </div>
+
+    <hr class="div">
+
+    <button class="btn btn-go" onclick="runScorecardAnalysis()" id="sc-run-btn">
+      ✨ Analyse Scorecard &amp; Predict Colleges &rarr;
+    </button>
+
+    <!-- Spinner -->
+    <div id="sc-spinner-wrap" style="display:none;margin-top:28px">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:16px;padding:28px">
+        <div class="sc-spinner"></div>
+        <div id="sc-spinner-msg" style="font-size:.9rem;color:var(--text2);font-weight:500"></div>
+      </div>
+    </div>
+
+    <!-- Extracted scores -->
+    <div id="sc-extracted" style="display:none;margin-top:24px">
+      <hr class="div">
+      <div class="stitle">✦ Scores Read from Your Scorecard</div>
+      <p class="ssub" id="sc-extracted-note"></p>
+      <div id="sc-extracted-table"></div>
+    </div>
+
+    <!-- Prediction results -->
+    <div class="rblock" id="sc-res-block">
+      <hr class="div">
+      <div class="rtitle" id="sc-res-title"></div>
+      <div class="rsub" id="sc-res-sub"></div>
+      <div class="stabs" id="sc-res-tabs"></div>
+      <div id="sc-res-list"></div>
+    </div>
+
+  </div>
+</div>
+</div>
+
 
 </div></main>
 
@@ -1279,12 +1860,357 @@ function drawPredCard(progs,container){
     container.appendChild(card);
   });
 }
-function switchTab(tab,btn){
-  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));btn.classList.add('on');
-  document.getElementById('tab-checker').classList.toggle('hidden',tab!=='checker');
-  document.getElementById('tab-predictor').classList.toggle('hidden',tab!=='predictor');
-}
+
 document.addEventListener('DOMContentLoaded',init);
+
+/* ═══ SCORECARD AI LOGIC ═══════════════════════════════════ */
+
+/* ═══════════════════════════════════════════════
+   AI ADMISSION GUIDE — FULL CHAT ENGINE
+═══════════════════════════════════════════════ */
+let aiHistory = [];   // [{role:'user'|'model', content:'...'}]
+let aiTyping  = false;
+let sidebarOpen = true;
+
+function toggleSidebar() {
+  sidebarOpen = !sidebarOpen;
+  const sb = document.getElementById('ai-sidebar');
+  if (sb) sb.classList.toggle('collapsed', !sidebarOpen);
+}
+
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 180) + 'px';
+}
+
+function useWcard(card) {
+  const text = card.querySelector('.ai-wcard-text').textContent.trim();
+  document.getElementById('ai-input').value = text;
+  sendMsg();
+}
+
+function askTopic(btn) {
+  const text = btn.textContent.replace(/^[^\s]+\s/, '').trim(); // strip emoji
+  document.getElementById('ai-input').value = text;
+  sendMsg();
+}
+
+function startNewChat() {
+  aiHistory = [];
+  const box = document.getElementById('ai-messages');
+  box.innerHTML = document.getElementById('ai-welcome') ? '' : '';
+  // Re-show welcome
+  box.innerHTML = `
+    <div class="ai-welcome" id="ai-welcome">
+      <div class="ai-welcome-icon">🎓</div>
+      <h2 class="ai-welcome-title">DU Admission AI Guide</h2>
+      <p class="ai-welcome-sub">Ask me anything about Delhi University admissions, courses, eligibility &amp; colleges. I know all 265 DU programmes and CUET 2024 cut-off data.</p>
+      <p class="ai-welcome-sub" style="margin-top:6px;font-size:.82rem;color:var(--text3)">आप हिंदी, English या किसी भी भाषा में पूछ सकते हैं।</p>
+      <div class="ai-welcome-cards">
+        <div class="ai-wcard" onclick="useWcard(this)"><div class="ai-wcard-icon">🎯</div><div class="ai-wcard-text">I have English, History and GAT — which DU courses can I apply for?</div></div>
+        <div class="ai-wcard" onclick="useWcard(this)"><div class="ai-wcard-icon">📊</div><div class="ai-wcard-text">I scored 220 in English and 230 in Economics. Which colleges can I get in OBC category?</div></div>
+        <div class="ai-wcard" onclick="useWcard(this)"><div class="ai-wcard-icon">📚</div><div class="ai-wcard-text">B.Com Hons की eligibility क्या है और कौन से subjects चाहिए?</div></div>
+        <div class="ai-wcard" onclick="useWcard(this)"><div class="ai-wcard-icon">🔬</div><div class="ai-wcard-text">What is the difference between B.Sc Hons and B.Sc Programme courses?</div></div>
+      </div>
+    </div>`;
+  document.getElementById('ai-input').value = '';
+}
+
+function hideWelcome() {
+  const w = document.getElementById('ai-welcome');
+  if (w) w.style.display = 'none';
+}
+
+function appendUserMsg(text) {
+  hideWelcome();
+  const box = document.getElementById('ai-messages');
+  const turn = document.createElement('div');
+  turn.className = 'ai-turn ai-turn-user';
+  turn.innerHTML = `<div class="ai-bubble-user">${escHtml(text).replace(/\n/g,'<br>')}</div>`;
+  box.appendChild(turn);
+  box.scrollTop = box.scrollHeight;
+}
+
+function appendTyping() {
+  const box = document.getElementById('ai-messages');
+  const turn = document.createElement('div');
+  turn.className = 'ai-turn ai-turn-ai'; turn.id = 'ai-typing-turn';
+  turn.innerHTML = `<div class="ai-avatar-ai">🤖</div><div class="ai-bubble-ai"><div class="ai-typing-dots"><span></span><span></span><span></span></div></div>`;
+  box.appendChild(turn);
+  box.scrollTop = box.scrollHeight;
+}
+
+
+function appendAiMsg(text) {
+  const box = document.getElementById('ai-messages');
+  const turn = document.createElement('div');
+  turn.className = 'ai-turn ai-turn-ai';
+  turn.innerHTML = `<div class="ai-avatar-ai">🤖</div><div class="ai-bubble-ai">${formatAiMd(text)}</div>`;
+  box.appendChild(turn);
+  box.scrollTop = box.scrollHeight;
+}
+
+function escHtml(t) {
+  return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function formatAiMd(text) {
+  // Preserve HTML-safe markdown rendering
+  let t = text
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    // Tables: | col | col |
+    .replace(/\|(.+)\|\n\|[-| :]+\|\n((?:\|.+\|\n?)*)/g, (_, header, rows) => {
+      const ths = header.split('|').filter(s=>s.trim()).map(s=>`<th>${s.trim()}</th>`).join('');
+      const trs = rows.trim().split('\n').map(r => {
+        const tds = r.split('|').filter(s=>s.trim()).map(s=>`<td>${s.trim()}</td>`).join('');
+        return `<tr>${tds}</tr>`;
+      }).join('');
+      return `<table><thead><tr>${ths}</tr></thead><tbody>${trs}</tbody></table>`;
+    })
+    // Headings
+    .replace(/^### (.+)$/gm,'<h3>$1</h3>')
+    .replace(/^## (.+)$/gm,'<h3>$1</h3>')
+    // Bold
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    // Italic
+    .replace(/\*(.+?)\*/g,'<em>$1</em>')
+    // Bullet lists
+    .replace(/^[\-\*] (.+)$/gm,'<li>$1</li>')
+    // Numbered lists
+    .replace(/^\d+\. (.+)$/gm,'<li>$1</li>')
+    // Wrap consecutive <li> in <ul>
+    .replace(/(<li>.*?<\/li>\n?)+/gs, m => `<ul>${m}</ul>`)
+    // Code inline
+    .replace(/`([^`]+)`/g,'<code>$1</code>')
+    // Line breaks → paragraphs
+    .replace(/\n\n/g,'</p><p>')
+    .replace(/\n/g,'<br>');
+  return `<p>${t}</p>`;
+}
+
+async function sendMsg() {
+  if (aiTyping) return;
+  const inp = document.getElementById('ai-input');
+  const msg = inp.value.trim();
+  if (!msg) return;
+  inp.value = ''; inp.style.height = 'auto';
+
+  appendUserMsg(msg);
+  aiHistory.push({ role: 'user', content: msg });
+
+  aiTyping = true;
+  document.getElementById('ai-send-btn').disabled = true;
+  appendTyping();
+
+  try {
+    const resp = await fetch('/api/analyse', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        mode: 'chat',
+        chatHistory: aiHistory.slice(0, -1),  // exclude last user msg (sent separately)
+        message: msg
+      })
+    });
+    const data = await resp.json();
+    removeTyping();
+
+    if (data.reply) {
+      appendAiMsg(data.reply);
+      aiHistory.push({ role: 'model', content: data.reply });
+    } else {
+      const errMsg = '⚠ ' + (data.error?.message || 'Something went wrong. Please try again.');
+      appendAiMsg(errMsg);
+    }
+  } catch(err) {
+    removeTyping();
+    appendAiMsg('⚠ Network error. Please check your connection and try again.');
+  }
+
+  aiTyping = false;
+  document.getElementById('ai-send-btn').disabled = false;
+  document.getElementById('ai-messages').scrollTop = 9999;
+}
+
+// Initialise sidebar state on load
+window.addEventListener('DOMContentLoaded', () => {
+  if (window.innerWidth < 768) { sidebarOpen = false; const sb=document.getElementById('ai-sidebar'); if(sb) sb.classList.add('collapsed'); }
+});
+
+// Override switchTab to init AI tab
+
+function switchTab(tab, btn) {
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on')); btn.classList.add('on');
+  document.getElementById('tab-checker').classList.toggle('hidden', tab!=='checker');
+  document.getElementById('tab-predictor').classList.toggle('hidden', tab!=='predictor');
+  document.getElementById('tab-scorecard').classList.toggle('hidden', tab!=='scorecard');
+  document.getElementById('tab-upload').classList.toggle('hidden', tab!=='upload');
+}
+
+
+/* ═══ SCORECARD UPLOAD LOGIC ═══════════════════════════════════ */
+let scCat = 'UR', scB64 = null, scMime = 'image/jpeg';
+
+function setScCat(btn) {
+  document.querySelectorAll('#sc-catbtns .catbtn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on'); scCat = btn.dataset.cat;
+}
+
+function onScFileSelect(input) {
+  const file = input.files[0]; if (!file) return;
+  if (file.size > 10*1024*1024) { alert('File too large. Please use a file under 10MB.'); return; }
+  const isPDF = file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf');
+  scMime = isPDF ? 'application/pdf' : (file.type || 'image/jpeg');
+  const reader = new FileReader();
+  reader.onload = e => {
+    scB64 = e.target.result.split(',')[1];
+    if (isPDF) {
+      document.getElementById('sc-preview-img').src = 'data:image/svg+xml,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="200" height="160" viewBox="0 0 200 160"><rect width="200" height="160" rx="10" fill="#1a2035"/><rect x="60" y="20" width="80" height="100" rx="6" fill="#243358"/><rect x="72" y="34" width="56" height="6" rx="3" fill="#f5c842" opacity=".8"/><rect x="72" y="46" width="40" height="4" rx="2" fill="#7888aa"/><rect x="72" y="56" width="48" height="4" rx="2" fill="#7888aa"/><rect x="72" y="66" width="36" height="4" rx="2" fill="#7888aa"/><text x="100" y="142" text-anchor="middle" fill="#f5c842" font-size="11" font-family="sans-serif" font-weight="700">PDF Scorecard</text></svg>`);
+      document.getElementById('sc-preview-name').textContent = '📄 ' + file.name;
+    } else {
+      document.getElementById('sc-preview-img').src = e.target.result;
+      document.getElementById('sc-preview-name').textContent = file.name;
+    }
+    document.getElementById('sc-preview-wrap').style.display = 'block';
+    document.getElementById('upload-zone').style.display = 'none';
+    document.getElementById('sc-extracted').style.display = 'none';
+    document.getElementById('sc-res-block').style.display = 'none';
+  };
+  reader.readAsDataURL(file);
+}
+
+function clearScUpload() {
+  scB64 = null;
+  document.getElementById('sc-file').value = '';
+  document.getElementById('sc-preview-wrap').style.display = 'none';
+  document.getElementById('upload-zone').style.display = 'block';
+  document.getElementById('sc-extracted').style.display = 'none';
+  document.getElementById('sc-res-block').style.display = 'none';
+}
+
+// Drag-and-drop
+window.addEventListener('DOMContentLoaded', () => {
+  const zone = document.getElementById('upload-zone');
+  if (!zone) return;
+  zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
+  zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+  zone.addEventListener('drop', e => {
+    e.preventDefault(); zone.classList.remove('drag-over');
+    const file = e.dataTransfer.files[0];
+    if (file) { const dt = new DataTransfer(); dt.items.add(file); document.getElementById('sc-file').files = dt.files; onScFileSelect(document.getElementById('sc-file')); }
+  });
+});
+
+function scMatchSubject(raw) {
+  const r = raw.toLowerCase().replace(/[^a-z0-9 ]/g,' ').replace(/\s+/g,' ').trim();
+  const langMap = { english:'English', hindi:'Hindi', assamese:'Assamese', bengali:'Bengali', gujarati:'Gujarati', kannada:'Kannada', malayalam:'Malayalam', marathi:'Marathi', odia:'Odia', punjabi:'Punjabi', tamil:'Tamil', telugu:'Telugu', urdu:'Urdu' };
+  for (const [k,v] of Object.entries(langMap)) { if (r.includes(k)) return {name:v, type:'lang'}; }
+  if (/general.*test|aptitude/.test(r)) return {name:'General Aptitude Test', type:'gat'};
+  const domMap = [
+    [['physics'],'Physics'], [['chemistry'],'Chemistry'],
+    [['mathematics','applied mathematics'],'Mathematics/ Applied Mathematics'],
+    [['computer science','informatics','information practices'],'Computer Science / Information Practices'],
+    [['biology','biological','biotechnology','biochemistry'],'Biology / Biological Science / Biotechnology / Biochemistry'],
+    [['accountancy','book keeping','bookkeeping'],'Accountancy / Book Keeping'],
+    [['business studies'],'Business Studies'],
+    [['economics','business economics'],'Economics / Business Economics'],
+    [['history'],'History'], [['geography','geology'],'Geography / Geology'],
+    [['political science','polity'],'Political Science'], [['psychology'],'Psychology'],
+    [['sociology'],'Sociology'],
+    [['physical education','yoga','sports'],'Physical Education (Yoga, Sports)'],
+    [['environmental'],'Environmental Studies/Environmental Science'],
+    [['fine arts','visual arts','commercial arts'],'Fine Arts / Visual Arts (Sculpture/Painting) /Commercial Arts'],
+    [['home science'],'Home Science'],
+    [['knowledge tradition','tradition and practices'],'Knowledge Tradition and Practices in India'],
+    [['mass media','mass communication'],'Mass Media / Mass Communication'],
+    [['performing arts','dance','drama'],'Performing Arts (Dance, Drama, Music)'],
+    [['anthropology'],'Anthropology'], [['agriculture'],'Agriculture'], [['sanskrit'],'Sanskrit'],
+  ];
+  for (const [keys, canon] of domMap) { if (keys.some(k => r.includes(k))) return {name:canon, type:'dom'}; }
+  return null;
+}
+
+async function runScorecardAnalysis() {
+  if (!scB64) { alert('Please upload your scorecard image or PDF first.'); return; }
+  const btn = document.getElementById('sc-run-btn');
+  btn.disabled = true;
+  document.getElementById('sc-spinner-wrap').style.display = 'block';
+  document.getElementById('sc-extracted').style.display = 'none';
+  document.getElementById('sc-res-block').style.display = 'none';
+
+  const msgs = ['Reading your scorecard with AI...','Identifying subjects and scores...','Matching to CUET subject list...','Calculating eligible programmes...'];
+  let mi = 0;
+  const msgEl = document.getElementById('sc-spinner-msg');
+  msgEl.textContent = msgs[0];
+  const iv = setInterval(() => { mi=(mi+1)%msgs.length; msgEl.textContent=msgs[mi]; }, 1800);
+
+  const done = () => { clearInterval(iv); document.getElementById('sc-spinner-wrap').style.display='none'; btn.disabled=false; };
+  const showErr = msg => {
+    done();
+    document.getElementById('sc-extracted').style.display = 'block';
+    document.getElementById('sc-extracted-note').textContent = '';
+    document.getElementById('sc-extracted-table').innerHTML = '<div class="sc-err">⚠ ' + msg + '</div>';
+  };
+
+  try {
+    const resp = await fetch('/api/analyse', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ mode: 'scorecard', imageData: scB64, mimeType: scMime })
+    });
+    if (!resp.ok) {
+      const e = await resp.json().catch(()=>({}));
+      showErr(e.error?.message || 'API error ' + resp.status); return;
+    }
+    const data = await resp.json();
+    const text = (data.content && data.content[0] && data.content[0].text) || '';
+    const jm = text.match(/\[.*?\]/s);
+    if (!jm) { showErr('Could not read the score table. Please ensure the scorecard image is clear and shows the Score Card Details table.'); return; }
+    let raw;
+    try { raw = JSON.parse(jm[0]); } catch(e) { showErr('Could not parse scorecard data. Please upload a clearer image.'); return; }
+    if (!raw.length) { showErr('No scores found. Please upload a clear image showing the Score Card Details table.'); return; }
+    done();
+
+    const entries = [], unmatched = [];
+    raw.forEach(item => {
+      const m = scMatchSubject(item.subject);
+      if (m) entries.push({...m, score: Math.min(parseFloat(item.score)||0, 250), rawName: item.subject});
+      else unmatched.push(item.subject);
+    });
+    if (!entries.length) { showErr('Could not match any subjects to CUET list. Please try a clearer image.'); return; }
+
+    const total = entries.reduce((s,e) => s+e.score, 0);
+    const typeLabel = {lang:'Language', dom:'Domain Subject', gat:'General Aptitude Test'};
+    let rows = entries.map((e,i) => `<tr>
+      <td style="width:32px;text-align:center"><span class="rnk">${i+1}</span></td>
+      <td style="color:var(--text3);font-size:.79rem">${e.rawName}</td>
+      <td><span style="font-size:.67rem;padding:2px 7px;border-radius:100px;background:rgba(255,255,255,.08);color:var(--text3)">${typeLabel[e.type]}</span></td>
+      <td style="color:var(--text);font-weight:500">${e.name}</td>
+      <td class="sc-score">${e.score.toFixed(4)}</td>
+    </tr>`).join('');
+    if (unmatched.length) rows += `<tr><td colspan="5" style="color:var(--text3);font-style:italic;font-size:.77rem;padding:8px 12px">⚠ Unmatched: ${unmatched.join(', ')}</td></tr>`;
+    rows += `<tr class="sc-total"><td colspan="4" style="font-weight:700;color:var(--text)">Total NTA Score</td><td class="sc-score">${total.toFixed(4)}</td></tr>`;
+    document.getElementById('sc-extracted-note').textContent = entries.length + ' subject(s) read · Total NTA Score: ' + total.toFixed(4);
+    document.getElementById('sc-extracted-table').innerHTML = `<table class="sc-tbl"><thead><tr><th>#</th><th>From Scorecard</th><th>Type</th><th>Matched Subject</th><th>Score</th></tr></thead><tbody>${rows}</tbody></table>`;
+    document.getElementById('sc-extracted').style.display = 'block';
+
+    const results = [];
+    for (const prog of PROGRAMS) {
+      const sc = calcBest(prog, entries);
+      if (sc) results.push({...prog, studentScore:sc.score, scoreMax:sc.max, breakdown:sc.breakdown, comboLabel:sc.comboLabel});
+    }
+    const res = document.getElementById('sc-res-block');
+    res.style.display = 'block';
+    document.getElementById('sc-res-title').textContent = results.length + ' Eligible Programme(s) Found';
+    document.getElementById('sc-res-sub').innerHTML = 'Based on your CUET scorecard &nbsp;|&nbsp; Category: <strong>' + scCat + '</strong> &nbsp;|&nbsp; Sorted by UR cut-off';
+    const prev = selCat; selCat = scCat;
+    buildTabs(results, 'sc-res-tabs', 'sc-res-list', drawPredCard);
+    selCat = prev;
+    res.scrollIntoView({behavior:'smooth'});
+  } catch(err) {
+    done();
+    showErr(err.message || 'Something went wrong. Please try again.');
+  }
+}
+
 </script>
-</body>
-</html>
