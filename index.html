@@ -1241,6 +1241,83 @@ footer {
 .sc-tbl .sc-total td { background:rgba(245,200,66,.07); border-top:1px solid rgba(245,200,66,.2); font-weight:700; color:var(--text); }
 .sc-tbl .sc-total .sc-score { font-size:1rem; }
 .sc-err { background:var(--red-dim); border:1px solid rgba(248,113,113,.3); border-radius:var(--r); padding:14px 18px; color:var(--red); font-size:.87rem; line-height:1.6; margin-top:16px; }
+
+/* ─── PROGRAMME ELIGIBILITY TAB ─────────────────────────── */
+.elig-cats {
+  display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px;
+}
+.elig-cat-btn {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  padding: 14px 20px; min-width: 140px;
+  border: 1.5px solid var(--border2); border-radius: var(--r);
+  background: var(--bg3); cursor: pointer; transition: all .2s;
+  color: var(--text2); font-size: .83rem; font-weight: 500; text-align: center;
+}
+.elig-cat-btn:hover {
+  border-color: var(--gold); color: var(--gold2);
+  background: var(--gold-dim); transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(245,200,66,.12);
+}
+.elig-cat-btn.on {
+  border-color: var(--gold); background: var(--gold);
+  color: var(--ink); font-weight: 700;
+  box-shadow: 0 4px 16px rgba(245,200,66,.3);
+}
+.elig-cat-icon { font-size: 1.6rem; line-height: 1; }
+.elig-cat-count {
+  font-size: .7rem; font-weight: 600;
+  background: rgba(0,0,0,.15); border-radius: 10px;
+  padding: 2px 8px; margin-top: 2px;
+}
+.elig-cat-btn:not(.on) .elig-cat-count {
+  background: var(--surface2); color: var(--text3);
+}
+
+.elig-search-wrap { margin-bottom: 14px; }
+.elig-search {
+  width: 100%; padding: 11px 16px;
+  border: 1.5px solid var(--border2); border-radius: var(--r);
+  background: var(--bg3); color: var(--text);
+  font-family: "Plus Jakarta Sans", sans-serif; font-size: .87rem;
+  transition: border-color .2s;
+}
+.elig-search:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px var(--gold-dim); }
+
+.elig-progs {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 8px; max-height: 480px; overflow-y: auto;
+  padding-right: 4px;
+}
+.elig-progs::-webkit-scrollbar { width: 4px; }
+.elig-progs::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+.elig-prog-btn {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 16px; border: 1.5px solid var(--border2);
+  border-radius: var(--r); background: var(--bg3);
+  cursor: pointer; transition: all .18s; text-align: left;
+  color: var(--text2); font-size: .84rem; font-weight: 500; line-height: 1.4;
+}
+.elig-prog-btn:hover {
+  border-color: var(--gold); color: var(--text);
+  background: rgba(245,200,66,.06); transform: translateX(3px);
+}
+.elig-prog-btn .elig-prog-arrow {
+  margin-left: auto; color: var(--text3); font-size: .8rem; flex-shrink: 0;
+  transition: transform .18s;
+}
+.elig-prog-btn:hover .elig-prog-arrow { color: var(--gold); transform: translateX(3px); }
+
+.elig-detail-header {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 16px; margin-bottom: 16px; flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+  .elig-cats { gap: 8px; }
+  .elig-cat-btn { min-width: 110px; padding: 11px 14px; font-size: .78rem; }
+  .elig-progs { grid-template-columns: 1fr; max-height: 360px; }
+}
 </style>
 </head>
 <body>
@@ -1262,6 +1339,7 @@ footer {
       <button class="htab" onclick="switchTab('predictor',this)">College &amp; Course Predictor</button>
       <button class="htab" onclick="switchTab('upload',this)">📄 Upload Scorecard</button>
       <button class="htab" onclick="switchTab('scorecard',this)">🤖 AI Admission Guide</button>
+      <button class="htab" onclick="switchTab('eligibility',this)">📚 Programme Eligibility</button>
     </div>
   </div>
 </header>
@@ -1535,6 +1613,77 @@ footer {
       <div class="rsub" id="sc-res-sub"></div>
       <div class="stabs" id="sc-res-tabs"></div>
       <div id="sc-res-list"></div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+
+<!-- ═══ TAB 5: PROGRAMME ELIGIBILITY ═══ -->
+<div id="tab-eligibility" class="hidden">
+<div class="panel">
+  <div class="ph">
+    <span class="ph-icon">📚</span>
+    <div>
+      <h2>DU Programme-wise Eligibility</h2>
+      <p>Browse all 265 DU programmes — click a category, then a course to see eligibility &amp; all college cut-offs</p>
+    </div>
+  </div>
+  <div class="pb">
+
+    <!-- Step 1: Category selection -->
+    <div class="sblock">
+      <div class="stitle">✦ Select Category</div>
+      <div class="elig-cats" id="elig-cats"></div>
+    </div>
+
+    <!-- Step 2: Programme list -->
+    <div id="elig-prog-block" style="display:none">
+      <hr class="div">
+      <div class="stitle" id="elig-prog-title">✦ Programmes</div>
+      <div class="elig-search-wrap">
+        <input type="text" id="elig-search" class="elig-search" placeholder="🔍 Search programmes..." oninput="filterEligProgs()">
+      </div>
+      <div class="elig-progs" id="elig-progs"></div>
+    </div>
+
+    <!-- Step 3: College cut-offs -->
+    <div id="elig-detail-block" style="display:none">
+      <hr class="div">
+      <div class="elig-detail-header">
+        <div>
+          <div class="rtitle" id="elig-detail-title"></div>
+          <div class="rsub" id="elig-detail-stream"></div>
+        </div>
+        <button class="btn btn-ol btn-sm" onclick="closeEligDetail()">✕ Close</button>
+      </div>
+
+      <!-- Eligibility box -->
+      <div class="ebox" id="elig-detail-elig">
+        <strong>Eligibility Criteria</strong>
+        <span id="elig-detail-elig-text"></span>
+      </div>
+
+      <!-- College table -->
+      <div class="stitle" style="margin-top:20px">🏫 Colleges (Highest to Lowest UR Cut-off)</div>
+      <div style="overflow-x:auto;margin-top:12px">
+        <table class="ctbl" id="elig-college-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>College Name</th>
+              <th>UR</th>
+              <th>OBC</th>
+              <th>SC</th>
+              <th>ST</th>
+              <th>EWS</th>
+              <th>PwBD</th>
+            </tr>
+          </thead>
+          <tbody id="elig-college-tbody"></tbody>
+        </table>
+      </div>
     </div>
 
   </div>
@@ -2003,15 +2152,21 @@ async function sendMsg() {
   appendTyping();
 
   try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 28000);
+
     const resp = await fetch('/api/analyse', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         mode: 'chat',
-        chatHistory: aiHistory.slice(0, -1),  // exclude last user msg (sent separately)
+        chatHistory: aiHistory.slice(0, -1),
         message: msg
-      })
+      }),
+      signal: controller.signal
     });
+
+    clearTimeout(timeout);
     const data = await resp.json();
     removeTyping();
 
@@ -2024,7 +2179,11 @@ async function sendMsg() {
     }
   } catch(err) {
     removeTyping();
-    appendAiMsg('⚠ Network error. Please check your connection and try again.');
+    if (err.name === 'AbortError') {
+      appendAiMsg('⚠ Request timed out. The AI is taking too long — please try a shorter question or try again.');
+    } else {
+      appendAiMsg('⚠ Error: ' + (err.message || 'Network error. Please check your connection.'));
+    }
   }
 
   aiTyping = false;
@@ -2045,6 +2204,8 @@ function switchTab(tab, btn) {
   document.getElementById('tab-predictor').classList.toggle('hidden', tab!=='predictor');
   document.getElementById('tab-scorecard').classList.toggle('hidden', tab!=='scorecard');
   document.getElementById('tab-upload').classList.toggle('hidden', tab!=='upload');
+  document.getElementById('tab-eligibility').classList.toggle('hidden', tab!=='eligibility');
+  if(tab==='eligibility') initEligibilityTab();
 }
 
 
@@ -2211,6 +2372,122 @@ async function runScorecardAnalysis() {
     done();
     showErr(err.message || 'Something went wrong. Please try again.');
   }
+}
+
+
+/* ═══ PROGRAMME ELIGIBILITY TAB ════════════════════════════════ */
+const CAT_ICONS = {
+  'Sciences, Mathematics & Technology': '🔬',
+  'B.Sc. (Programme)': '🧪',
+  'Commerce & Management': '💼',
+  'Arts, Humanities & Social Sciences': '📖',
+  'Languages': '🌐',
+  'Vocational Studies': '🛠',
+  'Music': '🎵',
+  'Education': '🎓',
+  'Fine Arts': '🎨',
+};
+
+let eligCurrentCat = null;
+let eligCurrentProgs = [];
+let eligTabInited = false;
+
+function initEligibilityTab() {
+  if (eligTabInited) return;
+  eligTabInited = true;
+
+  // Group programmes by stream
+  const groups = {};
+  PROGRAMS.forEach(p => {
+    if (!groups[p.stream]) groups[p.stream] = [];
+    groups[p.stream].push(p);
+  });
+
+  // Render category buttons in official order
+  const container = document.getElementById('elig-cats');
+  CAT_ORDER.filter(s => groups[s]).concat(
+    Object.keys(groups).filter(s => !CAT_ORDER.includes(s))
+  ).forEach(stream => {
+    const btn = document.createElement('button');
+    btn.className = 'elig-cat-btn';
+    btn.innerHTML = `
+      <span class="elig-cat-icon">${CAT_ICONS[stream] || '📋'}</span>
+      <span>${stream}</span>
+      <span class="elig-cat-count">${groups[stream].length} programmes</span>`;
+    btn.onclick = () => selectEligCat(stream, btn, groups[stream]);
+    container.appendChild(btn);
+  });
+}
+
+function selectEligCat(stream, btn, progs) {
+  // Update active button
+  document.querySelectorAll('.elig-cat-btn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  eligCurrentCat = stream;
+  eligCurrentProgs = progs;
+
+  // Show programme list
+  document.getElementById('elig-prog-title').textContent = '✦ ' + stream + ' — ' + progs.length + ' Programmes';
+  document.getElementById('elig-search').value = '';
+  document.getElementById('elig-prog-block').style.display = 'block';
+  document.getElementById('elig-detail-block').style.display = 'none';
+  renderEligProgs(progs);
+
+  // Scroll to programmes
+  document.getElementById('elig-prog-block').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function renderEligProgs(progs) {
+  const container = document.getElementById('elig-progs');
+  container.innerHTML = '';
+  if (!progs.length) {
+    container.innerHTML = '<p class="no-res">No programmes found.</p>';
+    return;
+  }
+  progs.forEach(prog => {
+    const btn = document.createElement('button');
+    btn.className = 'elig-prog-btn';
+    btn.innerHTML = `<span style="flex:1">${prog.name}</span><span class="elig-prog-arrow">→</span>`;
+    btn.onclick = () => showEligDetail(prog);
+    container.appendChild(btn);
+  });
+}
+
+function filterEligProgs() {
+  const q = document.getElementById('elig-search').value.toLowerCase().trim();
+  if (!q) { renderEligProgs(eligCurrentProgs); return; }
+  renderEligProgs(eligCurrentProgs.filter(p => p.name.toLowerCase().includes(q)));
+}
+
+function showEligDetail(prog) {
+  document.getElementById('elig-detail-title').textContent = prog.name;
+  document.getElementById('elig-detail-stream').textContent = prog.stream;
+  document.getElementById('elig-detail-elig-text').innerHTML = prog.eligibility.replace(/\n/g, '<br>');
+
+  // Build college table sorted by UR descending (already sorted in data)
+  const cols = prog.colleges || [];
+  const f = v => (v ? Number(v).toFixed(2) : '—');
+  const rows = cols.map((c, i) => `
+    <tr>
+      <td><span class="rnk">${i + 1}</span></td>
+      <td style="font-weight:600;color:var(--text)">${c.name}</td>
+      <td style="font-weight:700;color:var(--gold2)">${f(c.UR)}</td>
+      <td>${f(c.OBC)}</td>
+      <td>${f(c.SC)}</td>
+      <td>${f(c.ST)}</td>
+      <td>${f(c.EWS)}</td>
+      <td>${f(c.PwBD)}</td>
+    </tr>`).join('');
+
+  document.getElementById('elig-college-tbody').innerHTML = rows ||
+    '<tr><td colspan="8" style="text-align:center;color:var(--text3);padding:16px">No college data available</td></tr>';
+
+  document.getElementById('elig-detail-block').style.display = 'block';
+  document.getElementById('elig-detail-block').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function closeEligDetail() {
+  document.getElementById('elig-detail-block').style.display = 'none';
 }
 
 </script>
